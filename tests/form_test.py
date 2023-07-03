@@ -1,3 +1,4 @@
+from pages.elements_page import CheckBoxPage
 from pages.form_page import FormPage
 
 
@@ -10,3 +11,7 @@ class TestFormPage:
         result = form_page.form_result()
         print(first_name, last_name, email)
         print(result)
+
+
+
+
