@@ -2,7 +2,7 @@ import random
 import time
 
 from conftest import driver
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonPage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonPage, LinksPage
 
 
 class TestElements:
@@ -102,3 +102,16 @@ class TestElements:
             assert right == "You have done a right click", "The right click button was not pressed"
             assert click == "You have done a dynamic click", "The dynamic click button was not pressed"
 
+    class TestLinkPage:
+
+        def test_check_link(self,driver):
+            links_page = LinksPage(driver, 'https://demoqa.com/links')
+            links_page.open()
+            href_link, current_url = links_page.check_new_tab_simple_link()
+            print(href_link, current_url)
+
+        def test_broken_link(self,driver):
+            links_page = LinksPage(driver, 'https://demoqa.com/links')
+            links_page.open()
+            responce_code = links_page.check_broken_link('https://demoqa.com/bad-request')
+            assert responce_code == 400
