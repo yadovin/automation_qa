@@ -1,35 +1,51 @@
+import os
 import time
 
-#from selenium.webdriver import Keys
+from selenium.webdriver.common import keys
 
-#from pages.base_page import BasePage
-#from locators.form_page_locators import FormPageLocators as Locators
+from generator.generator import generated_person, generated_file
+from locators.form_page_locators import FormPageLocators
+
+from selenium.webdriver import Keys
+
+from pages.base_page import BasePage
+from locators.form_page_locators import FormPageLocators as Locators
 
 
-#class FormPage(BasePage):
+class FormPage(BasePage):
+    locators = FormPageLocators()
 
-   # def fill_fields_and_submit(self):
-       # first_name = "Hello"
-       # last_name = "World"
-       # email = 'Hello@world.com'
-       # #self.remove_footer()
-        #self.element_is_visible(Locators.FIRST_NAME).send_keys(first_name)
-        #self.element_is_visible(Locators.LAST_NAME).send_keys(last_name)
-        #self.element_is_visible(Locators.EMAIL).send_keys(email)
-        #self.element_is_visible(Locators.GENDER).click()
-        #self.element_is_visible(Locators.MOBILE).send_keys('54321098')
-        #subject = self.element_is_visible(Locators.SUBJECT)
-        #subject.send_keys('English')
-        #subject.send_keys(Keys.RETURN)
-        # self.element_is_visible(Locators.SUBJECT).send_keys('English')
-        #self.element_is_visible(Locators.HOBBIES).click()
-        #self.element_is_visible(Locators.FILE_INPUT).send_keys(
-        #    r'C:\Users\Даниил\PycharmProjects\automation_qa\test.txt')
-        #self.element_is_visible(Locators.CURRENT_ADDRESS).send_keys('City, 1231, USA')
-        #self.element_is_visible(Locators.SUBMIT).click()
-        #return first_name, last_name, email
+    def fill_form_fields(self):
+        person = next(generated_person())
+        file_name, path = generated_file()
+        self.element_is_visible(self.locators.FIRST_NAME).send_keys(person.firstname)
+        self.element_is_visible(self.locators.LAST_NAME).send_keys(person.lastname)
+        self.element_is_visible(self.locators.EMAIL).send_keys(person.email)
+        self.element_is_visible(self.locators.GENDER).click()
+        self.element_is_visible(self.locators.MOBILE).send_keys(person.mobile)
+        self.element_is_visible(self.locators.SUBJECT).send_keys('Maths')
+        self.element_is_visible(self.locators.SUBJECT).send_keys(Keys.RETURN)
+        self.element_is_visible(self.locators.HOBBIES).click()
+        self.element_is_present(self.locators.FILE_INPUT).send_keys(path)
+        os.remove(path)
+        self.element_is_visible(self.locators.CURRENT_ADDRESS).send_keys(person.current_address)
+        self.element_is_visible(self.locators.SELECT_STATE).click()
+        self.element_is_visible(self.locators.STATE_INPUT).send_keys(Keys.RETURN)
+        self.element_is_visible(self.locators.SELECT_CITY).click()
+        self.element_is_visible(self.locators.CITY_INPUT).send_keys(Keys.RETURN)
+        self.element_is_visible(self.locators.SUBMIT).click()
+        return person
 
-    #def form_result(self):
-      #  result_list = self.elements_are_visible(Locators.RESULT_TABLE)
-       # result_text = [i.text for i in result_list]
-        #return result_text
+    def form_result(self):
+        result_list = self.elements_are_visible(self.locators.RESULT_TABLE)
+        data = []
+        for item in result_list:
+            self.go_to_element(item)
+            data.append(item.text)
+        return data
+
+
+
+
+
+
