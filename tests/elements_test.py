@@ -1,7 +1,8 @@
 import random
 import time
-
 from conftest import driver
+
+
 from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonPage, LinksPage, \
     UploadAndDownloadPage, DynamicPropertiesPage
 
