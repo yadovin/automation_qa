@@ -1,6 +1,7 @@
 import random
 
-from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators
+from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators, \
+    DroppablePageLocators, DraggablePageLocators
 from pages.base_page import BasePage
 
 
@@ -80,3 +81,72 @@ class ResizablePage(BasePage):
                                             random.randint(-200, -1), random.randint(-200, -1))
         min_size = self.get_px_from_width_height(self.get_max_min_size(self.locators.RESIZABLE))
         return max_size, min_size
+
+
+class DroppablePage(BasePage):
+    locators = DroppablePageLocators()
+
+    def drop_simple(self):
+        self.element_is_visible(self.locators.SIMPLE_TAB).click()
+        drag_div = self.element_is_visible(self.locators.DRAG_ME_SIMPLE)
+        drop_div = self.element_is_visible(self.locators.DROP_HERE_SIMPLE)
+        self.action_drag_and_drop_to_element(drag_div, drop_div)
+        return drop_div.text
+
+    def drop_accept(self):
+        self.element_is_visible(self.locators.ACCEPT_TAB).click()
+        acceptable_div = self.element_is_visible(self.locators.ACCEPTABLE)
+        not_acceptable_div = self.element_is_visible(self.locators.NOT_ACCEPTABLE)
+        drop_div = self.element_is_visible(self.locators.DROP_HERE_ACCEPT)
+        self.action_drag_and_drop_to_element(not_acceptable_div, drop_div)
+        drop_text_not_accept = drop_div.text
+        self.action_drag_and_drop_to_element(acceptable_div, drop_div)
+        drop_text_accept = drop_div.text
+        return drop_text_not_accept, drop_text_accept
+
+
+class DraggablePage(BasePage):
+    locators = DraggablePageLocators()
+
+    def get_before_and_after_position(self, drag_element):
+        self.action_drag_and_drop_by_offset(drag_element, random.randint(0,50), random.randint(0,50))
+        before_position = drag_element.get_attribute('style')
+        self.action_drag_and_drop_by_offset(drag_element, random.randint(0, 50), random.randint(0,50))
+        after_position = drag_element.get_attribute('style')
+        return before_position, after_position
+
+    def simple_drag_box(self):
+        self.element_is_visible(self.locators.SIMPLE_TAB).click()
+        drag_div = self.element_is_visible(self.locators.DRAG_ME)
+        before_position, after_position = self.get_before_and_after_position(drag_div)
+        return before_position, after_position
+
+    def get_top_position(self, positions):
+        pass
+
+    def get_left_position(self,positions):
+        pass
+
+    def axis_restricted_x(self):
+        self.element_is_visible(self.locators.AXIS_TAB).click()
+        only_x = self.element_is_visible(self.locators.ONLY_X)
+        position_x = self.get_before_and_after_position(only_x)
+        top_x_before = self.get_top_position(position_x[0])
+        top_x_after = self.get_top_position(position_x[1])
+        left_x_before = self.get_left_position(position_x[0])
+        left_x_after = self.get_left_position(position_x[1])
+        return [top_x_before,top_x_after, left_x_before, left_x_after]
+    def axis_restricted_y(self):
+        self.element_is_visible(self.locators.AXIS_TAB).click()
+        only_y = self.element_is_visible(self.locators.ONLY_Y)
+        position_x = self.get_before_and_after_position(only_y)
+        top_y_before = self.get_top_position(position_x[0])
+        top_y_after = self.get_top_position(position_x[1])
+        left_y_before = self.get_left_position(position_x[0])
+        left_y_after = self.get_left_position(position_x[1])
+        return [top_y_before, top_y_after], [left_y_before, left_y_after]
+
+
+
+
+

@@ -29,3 +29,25 @@ class ResizablePageLocators:
     RESIZABLE_HANDLE = (By.CSS_SELECTOR, 'div[id="resizable"] span[class="react-resizable-handle '
                                          'react-resizable-handle-se"]')
     RESIZABLE = (By.CSS_SELECTOR, 'div[id="resizable"]')
+
+
+class DroppablePageLocators:
+    # Simple
+    SIMPLE_TAB = (By.CSS_SELECTOR, "a[id='droppableExample-tab-simple']")
+    DRAG_ME_SIMPLE = (By.CSS_SELECTOR, 'div[id="draggable"]')
+    DROP_HERE_SIMPLE = (By.CSS_SELECTOR, '#simpleDropContainer #droppable')
+    # Accept
+    ACCEPT_TAB = (By.CSS_SELECTOR, "a[id='droppableExample-tab-accept']")
+    ACCEPTABLE = (By.CSS_SELECTOR, 'div[id="acceptable"]')
+    NOT_ACCEPTABLE = (By.CSS_SELECTOR, 'div[id="notAcceptable"]')
+    DROP_HERE_ACCEPT = (By.CSS_SELECTOR, '#acceptDropContainer #droppable')
+
+
+class DraggablePageLocators:
+    # Simple
+    SIMPLE_TAB = (By.CSS_SELECTOR, 'a[id="draggableExample-tab-simple"]')
+    DRAG_ME = (By.CSS_SELECTOR, 'div[id="draggableExample-tabpane-simple"] div[id="dragBox"]')
+    # Axis Restricted
+    AXIS_TAB = (By.CSS_SELECTOR, 'a[id="draggableExample-tab-axisRestriction"]')
+    ONLY_X = (By.CSS_SELECTOR, 'div[id="restrictedX"]')
+    ONLY_Y = (By.CSS_SELECTOR, 'div[id="restrictedY"]')
